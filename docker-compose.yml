@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  web:
+    build: ./api
+    tty: true
+    volumes:
+      - ./api:/go/src
+    ports:
+      - "3030:3000"
