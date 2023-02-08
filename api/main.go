@@ -11,7 +11,7 @@ import (
 
 func dbConnect() *gorm.DB {
 
-	dsn := "webuser:webpass@tcp(db:3306)/keijiban?charset=utf8mb4"
+	dsn := "user:pass@tcp(db:3306)/keijiban?charset=utf8mb4"
 	count := 0
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
