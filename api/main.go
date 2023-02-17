@@ -1,10 +1,9 @@
 package main
 
-import (
-	"keijiban/controller"
+import(
+	"keijiban/model"
 )
 
 func main() {
-	router := controller.GetRouter()
-	router.Run(";3030")
+	model.DbConnect()
 }
