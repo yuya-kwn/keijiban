@@ -61,7 +61,15 @@ func main() {
 		if err := db.Create(&comment).Error; err != nil {
 			fmt.Println(err)
 		}
+		c.JSON(http.StatusCreated, comment)
+	})
 
+	engine.GET("/showcomment", func(c *gin.Context) {
+		comment := Comment{}
+		result := db.Find(&comment)
+		if result.Error != nil {
+			fmt.Println(err)
+		}
 		c.JSON(http.StatusOK, comment)
 	})
 	engine.Run(":3030")
