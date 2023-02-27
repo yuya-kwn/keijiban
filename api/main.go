@@ -31,11 +31,11 @@ func main() {
 
 	engine.GET("/showcomment", func(c *gin.Context) {
 		comment := database.Comment{}
-		result := db.Find(&comment)
-		if result.Error != nil {
+		data := db.Find(&comment)
+		if data.Error != nil {
 			fmt.Println(err)
 		}
-		c.HTML(http.StatusOK, "show.html", gin.H{})
+		c.HTML(http.StatusOK, "show.html", gin.H{"data": data})
 	})
 
 	engine.Run(":3030")
