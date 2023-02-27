@@ -12,8 +12,7 @@ import (
 )
 
 type Comment struct {
-	ID    uint   `gorm:"primaryKey" json:"id"`
-	Title string `json:"tilte"`
+	ID    uint	`json:"id"`
 	Body  string `json:"body"`
 }
 
@@ -72,5 +71,6 @@ func main() {
 		}
 		c.JSON(http.StatusOK, comment)
 	})
+
 	engine.Run(":3030")
 }
