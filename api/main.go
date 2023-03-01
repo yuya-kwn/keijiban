@@ -30,12 +30,13 @@ func main() {
 	})
 
 	engine.GET("/showcomment", func(c *gin.Context) {
-		comment := database.Comment{}
+		comment := []database.Comment{}
 		data := db.Find(&comment)
 		if data.Error != nil {
 			fmt.Println(err)
 		}
-		c.HTML(http.StatusOK, "show.html", gin.H{"data": data})
+		fmt.Printf("%v" ,comment)
+		c.HTML(http.StatusOK, "show.html", gin.H{"data": comment})
 	})
 
 	engine.Run(":3030")
