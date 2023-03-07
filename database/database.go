@@ -14,6 +14,12 @@ type Comment struct {
 	Body string `json:"body"`
 }
 
+type User struct {
+	gorm.Model
+	UserId string `json:"userid"`
+	Password string `json:"password"`
+}
+
 var DB *gorm.DB
 var err error
 
