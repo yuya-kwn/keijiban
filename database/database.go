@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"keijiban/crypto"
 	"log"
 	"time"
 
@@ -16,7 +17,7 @@ type Comment struct {
 
 type User struct {
 	gorm.Model
-	UserId string `json:"userid"`
+	UserId   string `json:"userid"`
 	Password string `json:"password"`
 }
 
@@ -46,4 +47,23 @@ func DbConnect() *gorm.DB {
 	fmt.Println("データベース接続成功")
 
 	return db
+}
+
+func Signup(userId, password string) (*User, error) {
+	db := DbConnect()
+	user := User{}
+	db.Where("user_id = ?", userId).First(&user)
+	if user.ID != 0 {
+		fmt.Println("同一名のUserIdが既に登録されています。")
+		return nil, err
+	}
+
+	encryptPw, err := crypto.PasswordEncrypt(password)
+	if err != nil {
+		fmt.Println("パスワード暗号化中にエラーが発生しました。：", err)
+		return nil, err
+	}
+	user = User{UserId: userId, Password: encryptPw}
+	db.Create(&user)
+	return &user, nil
 }
