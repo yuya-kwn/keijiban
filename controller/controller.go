@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"keijiban/database"
+	"keijiban/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -39,13 +40,23 @@ func GetComment(c *gin.Context) {
 		c.HTML(http.StatusOK, "show.html", gin.H{"data": comment})
 }
 
-func PostSignup(c *gin.Context) {
-	id := c.PostForm("user_id")
-	pw := c.PostForm("password")
-	user, err := database.Signup(id, pw)
-	if err != nil {
-		c.Redirect(301, "/signup")
+func RegisterUser(c *gin.Context) {
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.Abort()
 		return
 	}
-	c.HTML(http.StatusCreated, "index.html", gin.H{"user": user})
+	if err := user.HashPassword(user.Password); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.Abort()
+		return
+	}
+	record := database.DB.Create(&user)
+	if record.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"userId": user.ID, "email": user.Email, "username": user.Username})
 }

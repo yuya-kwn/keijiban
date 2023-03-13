@@ -8,8 +8,9 @@
 </head>
 <body>
     <h1>新規登録</h1>
-    <form method="POST" action="/signup">
-        <p>ユーザーID: <input type="text" name="user_id" /></p>
+    <form method="POST" action="/api/signup">
+        <p>ユーザーネーム: <input type="text" name="username" /></p>
+        <p>E-mail: <input type="text" name=""></p>
         <p>パスワード: <input type="password" name="password" /></p>
         <p><input type="submit" value="新規会員登録" /> 
             <a href="/"><input type="button" value="戻る" /></a></p>
