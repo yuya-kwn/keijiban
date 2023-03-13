@@ -32,12 +32,12 @@ func GetComment(c *gin.Context) {
 	db := database.DbConnect()
 	db.AutoMigrate(&database.Comment{})
 	comment := []database.Comment{}
-		data := db.Find(&comment)
-		if data.Error != nil {
-			fmt.Println("error")
-		}
-		fmt.Printf("%v", comment)
-		c.HTML(http.StatusOK, "show.html", gin.H{"data": comment})
+	data := db.Find(&comment)
+	if data.Error != nil {
+		fmt.Println("error")
+	}
+	fmt.Printf("%v", comment)
+	c.HTML(http.StatusOK, "show.html", gin.H{"data": comment})
 }
 
 func RegisterUser(c *gin.Context) {

@@ -12,11 +12,12 @@ func GetRouter() *gin.Engine {
 	r.GET("/", GetTop)
 	r.POST("/comment", PostComment)
 	r.GET("/showcomment", GetComment)
-	r.GET("/signup", GetSignup)
+	
 	api := r.Group("/api")
 	{
+		api.GET("/user", GetSignup)
 		api.POST("/token", GenerateToken)
-		api.POST("/signup", RegisterUser)
+		api.POST("/user/register", RegisterUser)
 	}
 	secured := api.Group("/secured").Use(middleware.Auth())
 	{
