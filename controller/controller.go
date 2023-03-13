@@ -41,18 +41,15 @@ func GetComment(c *gin.Context) {
 }
 
 func RegisterUser(c *gin.Context) {
+	db := database.DbConnect()
+	db.AutoMigrate(&models.User{})
 	var user models.User
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		c.Abort()
-		return
-	}
 	if err := user.HashPassword(user.Password); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		c.Abort()
 		return
 	}
-	record := database.DB.Create(&user)
+	record := db.Create(&user)
 	if record.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
 		c.Abort()
